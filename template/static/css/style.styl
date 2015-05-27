@@ -1,0 +1,150 @@
+@import 'nib'
+@import url('//fonts.googleapis.com/css?family=Lato:300,400');
+
+_accent = #31d994
+
+.lato
+  font-family 'Lato', sans-serif
+  
+.pure-g [class *='pure-u']
+  @extends .lato
+.pure-form
+  input[type='text'], input[type='password'], input[type='email'], input[type='url'], input[type='date'], input[type='month'], input[type='time'], input[type='datetime'], input[type='datetime-local'], input[type='week'], input[type='number'], input[type='search'], input[type='tel'], input[type='color'], select, textarea
+    @extends .lato
+  button
+    @extends .lato
+button
+  @extends .lato
+
+html,
+body
+  width 100%
+  height 100%
+
+body
+  @extends .lato
+  background #FFF
+  font-weight 400
+  color #333
+  
+h1
+  @extends .lato
+  font-weight 300
+  margin 20px
+  
+blockquote
+  border-left 3px solid #EEE
+  margin-left 20px
+  padding-left 20px
+  color #D0D0D0
+  
+#search
+  width 250px
+  max-width 100%
+  fieldset
+    padding 10px
+    
+#results-diretti,
+#results-cambio
+  .results
+    margin 0 10px
+    &:empty
+      display none
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6
+    margin 0
+    font-weight 400
+
+.single-voyage
+  .single-stop
+    &:nth-child(2),
+    &:nth-child(5)
+      border-left 5px solid transparent
+      text-align left
+      margin-left -5px
+    &:nth-child(1),
+    &:nth-child(4)
+      border-right 5px solid transparent
+      text-align right
+      margin-right -5px
+
+    &.linea-1
+      border-color #f3f3f3 !important
+    &.linea-2
+      border-color #e32518 !important
+    &.linea-3
+      border-color #f4a553 !important
+    &.linea-41,
+    &.linea-42
+      border-color #b62e86 !important
+    &.linea-51,
+    &.linea-52
+      border-color #9fd1bf !important
+    &.linea-6
+      border-color #0062ac !important
+    &.linea-7
+      border-color #008357 !important
+    &.linea-8
+      border-color #7f6026 !important
+    &.linea-9
+      border-color #9d9400 !important
+    &.linea-10
+      border-color #64c5e3 !important
+    &.linea-11
+      border-color #f4b3c1 !important
+    &.linea-12
+      border-color #e1d400 !important
+    &.linea-13
+      border-color #53388b !important
+    &.linea-14
+      border-color #ec722b !important
+    &.linea-14L
+      border-color #006770 !important
+    &.linea-15
+      border-color #da6c10 !important
+    &.linea-16
+      border-color #f7ad11 !important
+    &.linea-17
+      border-color #87878a !important
+    &.linea-18
+      border-color #ffd50b !important
+    &.linea-19
+      border-color #737561 !important
+    &.linea-20
+      border-color #d0b3d2 !important
+    &.linea-21
+      border-color #b38d00 !important
+    &.linea-22
+      border-color #cec20b !important
+    &.linea-N
+      border-color #053881 !important
+    &.linea-VA
+      border-color #bda400 !important
+    
+    .padding
+      padding 10px
+  
+.separator-route
+.separator-cambio
+  text-align center
+.separator-route
+  height 80px
+  
+@media screen and (max-width: 568px)
+  .single-voyage
+    .single-stop
+      &:nth-child(1),
+      &:nth-child(2)
+      &:nth-child(4),
+      &:nth-child(5)
+        border-left 5px solid transparent
+        text-align left
+        margin-left -5px
+        margin-right 0
+        border-right-width 0px
+    
