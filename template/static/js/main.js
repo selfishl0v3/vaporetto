@@ -173,7 +173,7 @@
 
   //  -- get stops from ACTV website --
   reqwest({
-    url: 'http://panda.dev:1337/getStops',
+    url: 'http://api.vaporetto.mobi/getStops',
     type: 'json',
     method: 'get',
     contentType: 'application/json',
@@ -224,7 +224,7 @@
     }
 
     reqwest({
-      url: 'http://panda.dev:1337/getResults',
+      url: 'http://api.vaporetto.mobi/getResults',
       type: 'json',
       method: 'get',
       contentType: 'application/json',
