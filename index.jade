@@ -1,0 +1,22 @@
+doctype html
+html
+  head
+    title vaporetto.mobi
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='mobile-web-app-capable', content='yes')
+    link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css')
+    //-link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css')
+
+  body
+    
+    vaporetto
+
+    script(src='//cdnjs.cloudflare.com/ajax/libs/riot/2.2.2/riot+compiler.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/reqwest/2.0.0/reqwest.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.0/lodash.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js')
+    script(src='dist/vaporetto.js', type='riot/tag')
+    script.
+      riot.mount('vaporetto');
