@@ -1,6 +1,7 @@
 voyage
 
   .stops(each='{stop, k in stops}')
+    .cambio(if='{k == 2}') cambio here
     p
       pre ora: {stop.ora}
       pre fermata: {stop.fermata}

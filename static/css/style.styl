@@ -1,0 +1,95 @@
+@import('nib')
+@import url('//fonts.googleapis.com/css?family=Roboto:400,300,500');
+
+
+
+$red = #fc3d39
+
+
+.roboto
+  font-family 'Roboto', sans-serif
+
+
+.pure-form
+  input[type='text'], input[type='password'], input[type='email'], input[type='url'], input[type='date'], input[type='month'], input[type='time'], input[type='datetime'], input[type='datetime-local'], input[type='week'], input[type='number'], input[type='search'], input[type='tel'], input[type='color'], select, textarea
+    @extends .roboto
+    appearance none
+    font-weight 300
+    background #FFF
+    color #333
+    border-radius 0
+    border none
+    border-bottom 2px solid #CCC
+    box-shadow none
+    margin-bottom 20px
+    padding 5px 20px
+    transition all 0.5s ease
+    
+button.pure-button
+  appearance none
+  @extends .roboto
+  border-radius 0
+  border none
+  color #FFF
+  padding 0
+  background $red
+  i
+    display inline-block
+    vertical-align middle
+    font-size 24px
+    padding-left 2px
+    margin-right 10px
+  span
+    font-size 15px
+    font-weight 700
+    letter-spacing 0.1em
+    text-transform uppercase
+    display inline-block
+    vertical-align middle
+
+
+
+
+
+.text-center
+  text-align center
+  
+_spacer = 5, 10, 20, 40, 60, 80, 100, 150
+
+for _val in _spacer
+  .spacer-{ _val }
+    height ( _val * 1px )
+    display block
+    clearfix()
+
+img
+  border none
+
+
+html,
+body
+  height 100%
+  @extends .roboto
+  
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+  margin 0
+
+
+header
+  background $red
+  position fixed
+  top 0
+  left 0
+  right 0
+  line-height 0
+  width 100%
+  img
+    margin 0 auto
+    width (196px / 2)
+    height (64px / 2)

@@ -1,12 +1,5 @@
 vaporetto
 
-
-  //
-    h1 vaporetto
-    blockquote la tua guida per Venezia!
-
-
-
   form#search.pure-form.pure-form-stacked(onsubmit='{searchVoyage}')
 
     h1 Il tuo viaggio
@@ -17,7 +10,7 @@ vaporetto
     label(for='time') Ora
     input#time(name='time', type='time')
 
-    button.pure-button.pure-button-primary(type='submit')
+    button.pure-button(type='submit')
       span Cerca
 
 
@@ -74,8 +67,13 @@ vaporetto
                                         .flatten()
                                         .map(function (r) { return (r.diretti ? r.diretti : []).concat(r.cambio ? r.cambio : []); })
                                         .flatten()
+                                        .uniq(function (v) {
+                                          return JSON.stringify(v);
+                                        })
+                                        .sortBy(function (v) {
+                                          return moment(v[0].ora, 'HH:mm').unix();
+                                        })
                                         .value();
-          //console.log('--> ', _this.tags.voyages.results);
           _this.tags.voyages.update();
 
         }
