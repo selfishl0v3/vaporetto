@@ -32,7 +32,8 @@ vaporetto
 
     retrieveStops() {
       reqwest({
-        url: 'http://api.vaporetto.mobi/getStops',
+        // url: 'http://api.vaporetto.mobi/getStops',
+        url: 'http://kura.dev:1337/getStops',
         type: 'json',
         method: 'get',
         contentType: 'application/json',
@@ -52,7 +53,8 @@ vaporetto
       var _this = this;
 
       reqwest({
-        url: 'http://api.vaporetto.mobi/getResults',
+        //url: 'http://api.vaporetto.mobi/getResults',
+        url: 'http://kura.dev:1337/getResults',
         type: 'json',
         method: 'get',
         contentType: 'application/json',
@@ -61,19 +63,8 @@ vaporetto
           console.log(err);
         },
         success: function (resp) {
-          //console.log(resp);
-          _this.tags.voyages.results = [];
-          _this.tags.voyages.results = _.chain(resp.results)
-                                        .flatten()
-                                        .map(function (r) { return (r.diretti ? r.diretti : []).concat(r.cambio ? r.cambio : []); })
-                                        .flatten()
-                                        .uniq(function (v) {
-                                          return JSON.stringify(v);
-                                        })
-                                        .sortBy(function (v) {
-                                          return moment(v[0].ora, 'HH:mm').unix();
-                                        })
-                                        .value();
+          // console.log(resp);
+          _this.tags.voyages.results = (resp.results.diretti ? resp.results.diretti : []).concat(resp.results.cambio ? resp.results.cambio : []);
           _this.tags.voyages.update();
 
         }
