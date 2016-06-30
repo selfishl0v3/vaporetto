@@ -1,7 +1,9 @@
 @import('nib')
-@import url('//fonts.googleapis.com/css?family=Roboto:400,300,500');
+@import('rupture')
+@import url('//fonts.googleapis.com/css?family=Roboto:400,300,500')
 
-
+rupture.scale = 0 568px 768px 1024px 1280px
+rupture.scale-names = 'sm' 'md' 'lg' 'xl' 'hd'
 
 $red = #fc3d39
 
@@ -24,7 +26,7 @@ $red = #fc3d39
     margin-bottom 20px
     padding 5px 20px
     transition all 0.5s ease
-    
+
 button.pure-button
   appearance none
   @extends .roboto
@@ -53,7 +55,7 @@ button.pure-button
 
 .text-center
   text-align center
-  
+
 _spacer = 5, 10, 20, 40, 60, 80, 100, 150
 
 for _val in _spacer
@@ -70,7 +72,7 @@ html,
 body
   height 100%
   @extends .roboto
-  
+
 
 h1,
 h2,
