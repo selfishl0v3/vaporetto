@@ -1,190 +1,91 @@
-/*jshint node:true, eqnull:true, laxcomma:true, undef:true, indent:2, camelcase:false, unused:true */
-'use strict';
-
-//  -- packages required --
-var gulp = require('gulp');
-
-var jade = require('gulp-jade');
-var stylus = require('gulp-stylus');
-var nib = require('nib');
-var uglify = require('gulp-uglify');
-
-var del = require('del');
-var connect = require('gulp-connect');
-
-var watch = require('gulp-watch');
-var gutil = require('gulp-util');
-var deploy = require('gulp-gh-pages');
+const gulp = require('gulp');
+const del = require('del');
+const plumber = require('gulp-plumber');
+const connect = require('gulp-connect');
+const pug = require('gulp-pug');
+const pugInheritance = require('gulp-pug-inheritance');
+const stylus = require('gulp-stylus');
+const nib = require('nib');
+const rupture = require('rupture');
+const changed = require('gulp-changed');
+const filter = require('gulp-filter');
+const deploy = require('gulp-gh-pages');
 
 
-//  -- cleaning all items in output --
-gulp.task('clean', function (cb) {
-  del.sync([__dirname + '/output/'], cb);
+gulp.task('clean', (cb) => {
+  del.sync(['./dist/'], cb);
 });
 
 
-//  -- serve files --
-gulp.task('serve', function () {
+gulp.task('serve', () => (
   connect.server({
-    root: __dirname + '/output/',
-    livereload: true
-  });
+    root: './dist',
+    livereload: true,
+    host: '0.0.0.0',
+    port: process.env.PORT || 1337,
+  })
+));
+
+
+gulp.task('layout', () => (
+  gulp
+    .src([
+      './src/*.pug',
+    ])
+    .pipe(changed('./dist', { extension: '.html' }))
+    .pipe(plumber())
+    .pipe(pugInheritance({ basedir: 'src' }))
+    .pipe(filter(file => (!/\/_/.test(file.path) && !/^_/.test(file.relative))))
+    .pipe(pug())
+    .pipe(gulp.dest('./dist'))
+    .pipe(connect.reload())
+));
+
+
+gulp.task('style', () => (
+  gulp
+    .src([
+      './src/css/*.styl',
+    ])
+    .pipe(changed('./dist/css', { extension: '.css' }))
+    .pipe(plumber())
+    .pipe(
+      stylus({
+        compress: true,
+        use: [
+          nib(),
+          rupture(),
+        ],
+      })
+    )
+    .pipe(gulp.dest('./dist/css'))
+    .pipe(connect.reload())
+));
+
+
+gulp.task('cname', () => (
+  gulp
+    .src(['./CNAME'])
+    .pipe(gulp.dest('./dist'))
+));
+
+
+gulp.task('watch', () => {
+  gulp.watch('./src/*.pug', ['layout']);
+  gulp.watch('./src/css/*.styl', ['style']);
+  gulp.watch('./CNAME', ['cname']);
 });
 
 
-//  -- compile templates --
-gulp.task('templates', function () { 
+gulp.task('deploy', () => (
   gulp
-    .src([
-      '!' + __dirname + '/template/layout.jade', 
-      __dirname + '/template/*.jade', 
-      __dirname + '/template/**/*.jade'
-    ])
-    .pipe(
-      watch([
-        __dirname + '/template/*.jade',
-        __dirname + '/template/**/*.jade'
-      ])
-    )
-    .pipe(jade({
-      pretty: false
-    }))
-    .on('error', function (err) {
-      gutil.log('\n === jade error!! ===\n', gutil.colors.red(err));
-      this.emit('end');
-    })
-    .pipe(
-      gulp.dest(__dirname + '/output/')
-    )
-    .pipe(
-      connect.reload()
-    );
-});
-
-
-//  -- compile styles --
-gulp.task('styles', function () {
-  gulp
-    .src([
-      __dirname + '/template/static/css/*.styl'
-    ])
-    .pipe(
-      watch(__dirname + '/template/static/css/*.styl')
-    )
-    .pipe( 
-      stylus({ 
-        use: nib(), 
-        compress: true 
-      })
-    )
-      .on('error', function (err) {
-        gutil.log('\n === stylus error!! ===\n', gutil.colors.cyan(err));
-        this.emit('end');
-      })
-    .pipe(
-      gulp.dest(__dirname + '/output/static/css')
-    )
-    .pipe(
-      connect.reload()
-    );
-});
-
-
-//  -- move js --
-gulp.task('javascripts', function () {
-  gulp
-    .src([
-      __dirname + '/template/static/js/**/*'
-    ])
-    .pipe(
-      watch(__dirname + '/template/static/js/**/*')
-    )
-    .pipe(
-      uglify({
-        'preserveComments': 'some'
-      })
-    )
-      .on('error', function (err) {
-        gutil.log('\n === js error!! ===\n', gutil.colors.yellow(err));
-        this.emit('end');
-      })
-    .pipe( 
-      gulp.dest(__dirname + '/output/static/js')
-    )
-    .pipe(
-      connect.reload()
-    );
-});
-
-
-//  -- move fonts --
-gulp.task('fonts', function () {
-  gulp
-    .src([
-      __dirname + '/template/static/font/**/*'
-    ])
-    .pipe(
-      watch(__dirname + '/template/static/font/**/*')
-    )
-    .pipe(
-      gulp.dest(__dirname + '/output/static/font')
-    )
-      .on('error', function (err) {
-        gutil.log('\n === fonts error!!! ===\n', gutil.colors.purple(err));
-        this.emit('end');
-      })
-    .pipe(
-      connect.reload()
-    );
-});
-
-
-//  -- move images --
-gulp.task('images', function () {
-  gulp
-    .src([
-      __dirname + '/template/static/img/**/*'
-    ])
-    .pipe(
-      watch(__dirname + '/template/static/img/**/*')
-    )
-    .pipe(
-      gulp.dest(__dirname + '/output/static/img')
-    )
-      .on('error', function (err) {
-        gutil.log('\n === images error!!! ===\n', gutil.colors.green(err));
-        this.emit('end');
-      })
-    .pipe(
-      connect.reload()
-    );
-});
-
-
-gulp.task('default', ['clean', 'templates', 'styles', 'javascripts', 'images', 'fonts', 'serve']);
-
-
-
-
-//  -- deploy to gh-pages branch --
-/*
-  If you haven't yet a gh-pages branch:
-
-  . git checkout --orphan gh-pages
-  . git rm -rf .
-  . touch README.md
-  . git add README.md
-  . git commit -m "Setup gh-pages branch"
-  . git push --set-upstream origin gh-pages
-  . git checkout master
-*/
-gulp.task('deploy', function () {
-  gulp
-    .src([
-      __dirname + '/output/**/*',
-      __dirname + '/CNAME'
-    ])
+    .src('./dist/**/*')
     .pipe(
       deploy()
-    );
-});
+    )
+));
+
+
+gulp.task('default', ['clean', 'layout', 'style', 'cname', 'watch', 'serve']);
+gulp.task('build', ['clean', 'layout', 'style', 'cname']);
+gulp.task('gh', ['deploy']);

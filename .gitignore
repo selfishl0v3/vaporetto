@@ -1,8 +1,7 @@
-output/
-node_modules/
+*.log
 .DS_Store
-.publish/
-npm-debug.log
-index.html
-static/
 .AppleDouble
+node_modules
+dist
+.yarnclean
+.publish
